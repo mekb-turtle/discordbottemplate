@@ -11,8 +11,17 @@ require("dotenv").config();
 
 const timeout = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
+const getID = (id) => {
+    if (id == null || id == undefined) return null;
+    id = id.author || id;
+    id = id.user || id;
+    id = id.guild || id;
+    id = id.id || id;
+    return id;
+};
+
 const isBotOwner = (id) => {
-    return BOT_OWNERS.includes(getId(id));
+    return BOT_OWNERS.includes(getID(id));
 };
 
 const reactDenied = async (message) => {
@@ -29,19 +38,10 @@ const escape = (text) => {
         .replace(/\r/gm, "\n");
 };
 
-const getID = (id) => {
-    if (id == null || id == undefined) return null;
-    id = id.author || id;
-    id = id.user || id;
-    id = id.guild || id;
-    id = id.id || id;
-    return id;
-};
-
 const generateInvite = (permissions, guild) => {
     return (
         `https://discord.com/api/oauth2/authorize?scope=bot&client_id=${client.user.id}&permissions=${permissions}` +
-        (guild ? `&guild_id=${getId(guild)}` : ``)
+        (guild ? `&guild_id=${getID(guild)}` : ``)
     );
 };
 
@@ -136,7 +136,7 @@ client.on("message", async (message) => {
     }
 });
 
-client.login(token);
+client.login(process.env.TOKEN);
 
 process.on("SIGUSR1", process.exit);
 process.on("SIGUSR2", process.exit);
