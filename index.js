@@ -106,14 +106,15 @@ client.on("message", async (message) => {
 
     var arg = args.join(" ");
 
-    if (await cantUse(message)) return;
     var cmdUsed = true;
 
     switch (cmd) {
         case "ping":
+   			if (await cantUse(message)) return;
             await message.channel.send("pong");
             break;
         case "help":
+   			if (await cantUse(message)) return;
             await message.channel.send(
                 "bot template\n" +
                     "commands:\n" +
