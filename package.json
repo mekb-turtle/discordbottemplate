@@ -1,0 +1,12 @@
+{
+  "name": "bot-template",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ."
+  },
+  "author": "mekb",
+  "dependencies": {
+    "discord.js": "^12.5.3",
+    "dotenv": "^8.2.0"
+  }
+}
