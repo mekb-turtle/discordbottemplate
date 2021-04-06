@@ -25,7 +25,7 @@ const isBotOwner = (id) => {
 };
 
 const reactDenied = async (message) => {
-    await message.react("820975813612142602");
+    await message.react("\u274e");
 };
 const reactCooldown = async (message) => {
     await message.react("\u23f2");
