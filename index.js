@@ -45,13 +45,27 @@ const generateInvite = (permissions, guild) => {
     );
 };
 
+const addCooldown = async (message) => {
+    cooldowns.push(message.author.id);
+    setTimeout(() => {
+        var i = cooldowns.indexOf(message.author.id);
+        if (i > -1) cooldowns.splice(i, 1);
+        var j = cooldowns2.indexOf(message.author.id);
+        if (j > -1) cooldowns2.splice(j, 1);
+    }, 3000);
+}
+
+const addCooldownReaction = async (message) => {
+    if (cooldowns2.indexOf(message.author.id) == -1) {
+        cooldowns2.push(message.author.id);
+        await reactCooldown(message);
+    }
+}
+
 const cantUse = async (message, ignoreMaintenance) => {
     if (isBotOwner(message)) return false;
     if (cooldowns.indexOf(message.author.id) > -1) {
-        if (cooldowns2.indexOf(message.author.id) == -1) {
-            cooldowns2.push(message.author.id);
-            await reactCooldown(message);
-        }
+	    await addCooldownReaction(message);
         return true;
     }
     if (!ignoreMaintenance && MAINTENANCE) {
@@ -61,13 +75,7 @@ const cantUse = async (message, ignoreMaintenance) => {
         );
         return true;
     }
-    cooldowns.push(message.author.id);
-    setTimeout(() => {
-        var i = cooldowns.indexOf(message.author.id);
-        if (i > -1) cooldowns.splice(i, 1);
-        var j = cooldowns2.indexOf(message.author.id);
-        if (j > -1) cooldowns2.splice(j, 1);
-    }, 3000);
+    await addCooldown(message);
     return false;
 };
 
