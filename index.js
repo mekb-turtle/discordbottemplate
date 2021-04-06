@@ -142,7 +142,3 @@ process.on("SIGUSR1", process.exit);
 process.on("SIGUSR2", process.exit);
 process.on("SIGINT", process.exit);
 process.on("exit", process.exit);
-process.on("uncaughtException", (err) => {
-    console.error(err);
-    process.exit();
-});
