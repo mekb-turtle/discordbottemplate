@@ -1,6 +1,6 @@
 {
     "PREFIX": "!",
-    "HEADER_TXT": "<:hammer:827800676138221639> bonkbot",
-    "BOT_OWNERS": ["686869093604917249"],
+    "HEADER_TXT": "Your Discord Bot",
+    "BOT_OWNERS": ["YOUR_USER_ID_HERE"],
     "MAINTENANCE": false
 }
