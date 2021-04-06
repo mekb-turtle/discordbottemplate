@@ -5,7 +5,7 @@ const Discord = require("discord.js");
 const client = new Discord.Client();
 
 const escape = (text) => {
-	return Discord.Util.escapeMarkdown(text).replace(/\@/g,"@\u200b");
+	return Discord.Util.escapeMarkdown(text).replace(/\@/g,"@\u200b").replace(/\r\n/gm,"\n").replace(/\r/gm,"\n");
 }
 
 var loading = true;
@@ -17,7 +17,7 @@ process.on("SIGUSR1", process.exit);
 process.on("SIGUSR2", process.exit);
 process.on("SIGINT", process.exit);
 process.on("exit", process.exit);
-process.on("uncaughtException", process.exit);
+process.on("uncaughtException", err=>{console.error(err);process.exit();});
 
 if (token) {
 
@@ -123,8 +123,8 @@ client.on("message", async message => {
 	if (cmd=="invite") {
 		if (await checkCantUse(message)) return;
 		await message.channel.send(headerText+
-		"\nNormal Invite: <"+generateInvite(322624)+">"+
-		"\nAdmin Invite: <"+generateInvite(8)+">");
+		`\nNormal Invite: <${generateInvite(322624)}>`+
+		`\nAdmin Invite: <${generateInvite(8)}>`);
 	}
 });
 
