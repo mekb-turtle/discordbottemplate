@@ -47,7 +47,7 @@ const isADev = (id) => {
 const timeout = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 const denyMessage = async (message) => {
-	await message.react("820975813612142602");
+	await message.react("\u274e");
 }
 
 const timeMessage = async (message) => {
