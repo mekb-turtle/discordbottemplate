@@ -1,0 +1,6 @@
+{
+    "PREFIX": "!",
+    "HEADER_TXT": "Your Discord Bot",
+    "BOT_OWNERS": ["YOUR_USER_ID_HERE"],
+    "MAINTENANCE": false
+}
