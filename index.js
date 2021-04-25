@@ -124,7 +124,8 @@ client.on("message", async (message) => {
         case "help":
    			if (await cantUse(message)) return;
             await message.channel.send(
-                "bot template\n" +
+                HEADER_TXT +
+                    "\n" +
                     "commands:\n" +
                     "!ping\n" +
                     "!help\n" +
