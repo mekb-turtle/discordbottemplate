@@ -123,13 +123,13 @@ client.on("message", async (message) => {
             break;
         case "help":
    			if (await cantUse(message)) return;
-            await message.channel.send(
+            await message.channel.send((
                 HEADER_TXT +
                     "\n" +
                     "commands:\n" +
                     "!ping\n" +
                     "!help\n" +
-                    "!invite".replace(/\!/g, PREFIX)
+                    "!invite").replace(/\!/g, PREFIX)
             );
             break;
         case "invite":
