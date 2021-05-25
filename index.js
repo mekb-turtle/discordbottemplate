@@ -118,17 +118,18 @@ client.on("message", async (message) => {
 
     switch (cmd) {
         case "ping":
-   			if (await cantUse(message)) return;
+            if (await cantUse(message)) return;
             await message.channel.send("pong");
             break;
         case "help":
-   			if (await cantUse(message)) return;
-            await message.channel.send(
-                "bot template\n" +
+            if (await cantUse(message)) return;
+            await message.channel.send((
+                HEADER_TXT +
+                    "\n" +
                     "commands:\n" +
                     "!ping\n" +
                     "!help\n" +
-                    "!invite".replace(/\!/g, PREFIX)
+                    "!invite").replace(/\!/g, PREFIX)
             );
             break;
         case "invite":
