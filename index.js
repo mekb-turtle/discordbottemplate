@@ -1,3 +1,5 @@
+console.log("Loading...");
+
 const {
     PREFIX,
     HEADER_TXT,
@@ -146,6 +148,7 @@ client.on("message", async (message) => {
     }
 });
 
+console.log("Logging in...");
 client.login(process.env.TOKEN);
 
 process.on("SIGUSR1", process.exit);
