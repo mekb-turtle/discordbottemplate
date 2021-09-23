@@ -7,8 +7,8 @@ const {
     MAINTENANCE,
 } = require("./config.json");
 
-const { Client } = require("discord.js");
-const client = new Client();
+const { Client, Intents, Permissions } = require("discord.js");
+const client = new Client({ intents: [ Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILD_MESSAGES ] });
 require("dotenv").config();
 
 const timeout = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -38,13 +38,6 @@ const escape = (text) => {
         .replace(/\@/g, "@\u200b")
         .replace(/\r\n/gm, "\n")
         .replace(/\r/gm, "\n");
-};
-
-const generateInvite = (permissions, guild) => {
-    return (
-        `https://discord.com/api/oauth2/authorize?scope=bot&client_id=${client.user.id}&permissions=${permissions}` +
-        (guild ? `&guild_id=${getID(guild)}` : ``)
-    );
 };
 
 const addCooldown = async (message) => {
@@ -86,20 +79,18 @@ let cooldowns2 = [];
 
 client.on("ready", async () => {
     console.log("Ready!");
-    await client.user.setActivity(`${PREFIX}help`, { type: "PLAYING" });
+    await client.user.setActivity(`${PREFIX}help | Discord bot template`, { type: "PLAYING" });
 });
 
-client.on("message", async (message) => {
+client.on("messageCreate", async (message) => {
     if (
         !message.content ||
         !message.author ||
         message.author.bot ||
-        // Checks if bot has permission SEND_MESSAGES
-        // Return false if no guild || has permission, true if no permission
         message.guild
             ? !message.channel
                   .permissionsFor(message.guild.me)
-                  .has("SEND_MESSAGES")
+                  .has(Permissions.FLAGS.SEND_MESSAGES)
             : false
     )
         return;
@@ -121,14 +112,18 @@ client.on("message", async (message) => {
     switch (cmd) {
         case "ping":
             if (await cantUse(message)) return;
-            await message.channel.send("pong");
+            const sent = await message.channel.send("Pong!");
+		    const timeDiff = (sent.editedAt || sent.createdAt) - (message.editedAt || message.createdAt);
+		    sent.delete();
+
+            await message.channel.send(`Pong!\n · Latency: ${timeDiff}ms\n · API Latency: ${Math.round(client.ws.ping)}ms`);
             break;
         case "help":
             if (await cantUse(message)) return;
             await message.channel.send((
                 HEADER_TXT +
                     "\n" +
-                    "commands:\n" +
+                    "Commands:\n" +
                     "!ping\n" +
                     "!help\n" +
                     "!invite").replace(/\!/g, PREFIX)
@@ -139,8 +134,12 @@ client.on("message", async (message) => {
             await message.channel.send(
                 HEADER_TXT +
                     "\n" +
-                    `Normal Invite: <${generateInvite(322624)}>\n` +
-                    `Admin Invite: <${generateInvite(8)}>`
+
+                    `Normal Invite: <${client.generateInvite({ scopes: ['bot'], permissions: [Permissions.FLAGS.ADD_REACTIONS,
+                        Permissions.FLAGS.VIEW_CHANNEL, Permissions.FLAGS.SEND_MESSAGES, Permissions.FLAGS.MANAGE_MESSAGES,
+                        Permissions.FLAGS.EMBED_LINKS, Permissions.FLAGS.ATTACH_FILES, Permissions.FLAGS.USE_EXTERNAL_EMOJIS] })}>\n` +
+
+                    `Admin Invite: <${client.generateInvite({ scopes: ['bot'], permissions: [Permissions.FLAGS.ADMINISTRATOR] })}>`
             );
             break;
         default:
