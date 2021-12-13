@@ -114,9 +114,8 @@ client.on("messageCreate", async (message) => {
             if (await cantUse(message)) return;
             const sent = await message.channel.send("Pong!");
 		    const timeDiff = (sent.editedAt || sent.createdAt) - (message.editedAt || message.createdAt);
-		    sent.delete();
-
-            await message.channel.send(`Pong!\n · Latency: ${timeDiff}ms\n · API Latency: ${Math.round(client.ws.ping)}ms`);
+            
+            if (sent.editable) await sent.edit(`Pong!\n · Latency: ${timeDiff}ms\n · API Latency: ${Math.round(client.ws.ping)}ms`);
             break;
         case "help":
             if (await cantUse(message)) return;
